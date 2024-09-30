@@ -7,9 +7,6 @@ app = Flask(__name__)
 # Load the pre-trained SBERT model
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
-
-
-
 def calculate_similarity_sbert(text1, text2):
     """
     This function calculates the cosine similarity between two texts using SBERT.
@@ -22,7 +19,7 @@ def calculate_similarity_sbert(text1, text2):
     similarity = util.pytorch_cos_sim(embedding1, embedding2).item()
     return similarity
 
-@app.route('/calculate_similarity', methods=['POST']) 
+@app.route('/calculate_similarity', methods=['POST'])
 def compare2str():
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
@@ -37,5 +34,6 @@ def compare2str():
 
     return jsonify({'similarity': round(similarity, 4)})
 
+# Vercel handles the execution of this function
 if __name__ == '__main__':
     app.run()
