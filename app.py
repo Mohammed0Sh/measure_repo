@@ -1,12 +1,11 @@
 # !pip install sentence-transformers
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from sentence_transformers import SentenceTransformer, util
 
-# Initialize Flask app
-app = Flask(__name__)
-
+app = Flask('__name__')
 # Load the pre-trained SBERT model
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
 
 def calculate_similarity_sbert(text1, text2):
     """
@@ -20,28 +19,25 @@ def calculate_similarity_sbert(text1, text2):
     similarity = util.pytorch_cos_sim(embedding1, embedding2).item()
     return similarity
 
-# Vercel handler
-def handler(req, res):
-    if req.method == 'POST':
-        if not req.is_json:
-            return jsonify({"error": "Request must be JSON"}), 400
-        
-        data = req.get_json()
-        string1 = data.get('text1')
-        string2 = data.get('text2')
 
-        # Calculate similarity
-        similarity = calculate_similarity_sbert(string1, string2)
-        similarity = max(0, similarity)
+@app.route('/calculate_similarity', methods=['POST'])
+def compare2str():
 
-        return jsonify({'similarity': round(similarity, 4)})
-    else:
-        return jsonify({"error": "Method not allowed"}), 405
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+    
+    data = request.get_json()
+    string1 = data.get('text1')
+    string2 = data.get('text2')
 
-# Entry point for Vercel
+    # Calculate similarity
+    similarity = calculate_similarity_sbert(string1, string2)
+    similarity = max(0, similarity)
+    
+
+    return jsonify({'similarity': round(similarity, 4)})
+    
+
 if __name__ == '__main__':
     app.run()
 
-# Vercel needs to expose a callable for the serverless function
-def vercel_function(req, res):
-    return handler(req, res)
