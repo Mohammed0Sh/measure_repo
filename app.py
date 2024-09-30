@@ -9,6 +9,7 @@ model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
 
 
+
 def calculate_similarity_sbert(text1, text2):
     """
     This function calculates the cosine similarity between two texts using SBERT.
@@ -21,7 +22,7 @@ def calculate_similarity_sbert(text1, text2):
     similarity = util.pytorch_cos_sim(embedding1, embedding2).item()
     return similarity
 
-@app.route('/calculate_similarity', methods=['POST'])  # Change the route to root
+@app.route('/calculate_similarity', methods=['POST']) 
 def compare2str():
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
