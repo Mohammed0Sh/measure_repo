@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/calculate_similarity.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/calculate_similarity",
+        "dest": "api/calculate_similarity.py"
+      }
+    ]
+  }
