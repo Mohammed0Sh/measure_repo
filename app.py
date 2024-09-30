@@ -7,6 +7,8 @@ app = Flask(__name__)
 # Load the pre-trained SBERT model
 model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
 
+
+
 def calculate_similarity_sbert(text1, text2):
     """
     This function calculates the cosine similarity between two texts using SBERT.
