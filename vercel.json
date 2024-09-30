@@ -8,8 +8,8 @@
     ],
     "routes": [
       {
-        "src": "/(.*)",
-        "dest": "app.py"
+        "src": "/calculate_similarity",
+        "dest": "/app.py"
       }
     ]
-}
+  }
